@@ -38,6 +38,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .brand { display: flex; align-items: center; gap: 10px; font: 700 17px var(--display); letter-spacing: .5px; text-decoration: none; color: var(--ink) }
 .brand svg { color: var(--violet) }
 nav { display: flex; gap: 4px; flex-wrap: wrap }
+nav.sub { margin: 4px 0 14px; gap: 6px }
+nav.sub a { padding: 5px 12px; border-radius: 99px; border: 1px solid var(--line); font-size: 14px }
+nav.sub a[aria-current="page"] { background: var(--violet); border-color: var(--violet); color: var(--violet-ink) }
 nav a { padding: 7px 12px; border-radius: 8px; color: var(--muted); text-decoration: none; font-weight: 500 }
 nav a[aria-current="page"] { background: var(--panel-2); color: var(--ink) }
 .head-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
@@ -155,9 +158,11 @@ footer { color: var(--muted); font-size: 12px; text-align: center }
   .head-right { display: contents }
   .brand { order: 1; margin-right: auto }
   #discord { order: 2 }
-  nav { order: 3; width: 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-right: 28px }
+  header nav { order: 3; width: 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-right: 28px }
   .hide-sm { display: none !important }
   nav a { white-space: nowrap }
+  header nav { padding-right: 0; gap: 0 } header nav a { padding: 7px 10px }
+  nav.sub { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none }
   .fresh { order: 4; width: 100% }
   .pulse > div { padding: 14px }
   .targets { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px } .target { flex: none }
@@ -172,6 +177,10 @@ main { display: grid; gap: 16px; align-content: start }
 .page-head h1 { margin: 0 }
 .sec-title { font: 700 20px var(--display); margin: 18px 0 0; display: flex; gap: 4px 10px; align-items: baseline; flex-wrap: wrap; scroll-margin-top: 84px }
 .sec-title small { font: 500 13px var(--body); color: var(--muted) }
+.cash { display: inline-flex; align-items: center; gap: 6px; font-weight: 500 }
+.cash input { width: 110px; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink); font: inherit }
+.feed { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); align-items: baseline }
+.feed a { color: var(--ink); font-weight: 500 }
 .sec-note { margin: -8px 0 0; font-size: 13px; color: var(--muted); max-width: 80ch }
 .jump { display: flex; gap: 6px; flex-wrap: wrap }
 .about.plan { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); align-items: start }
@@ -214,7 +223,8 @@ main { display: grid; gap: 16px; align-content: start }
 .hero .hero-drop { border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 10%, var(--panel)), var(--panel) 60%) }
 .buy-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--panel-2); text-decoration: none; color: var(--ink) }
 .buy-row:hover { outline: 1px solid var(--good) }
-.buy-row .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600 }
+.buy-row .nm { font-weight: 600; overflow-wrap: anywhere }
+@media (min-width: 700px) { .buy-row .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap } }
 .buy-row .sub { grid-column: 1; font-size: 12px; color: var(--muted) }
 .buy-row .chip-profit { grid-row: 1 / span 2; grid-column: 2; font: 700 18px var(--display); color: var(--good); font-variant-numeric: tabular-nums }
 .countdown { font: 700 30px var(--display); color: var(--gold); font-variant-numeric: tabular-nums; line-height: 1.1 }
@@ -231,6 +241,63 @@ main { display: grid; gap: 16px; align-content: start }
 .drop-head .countdown { font-size: 18px }
 .store-links { display: flex; flex-wrap: wrap; gap: 6px } .store-links a { font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); text-decoration: none }
 .tips { display: grid; gap: 6px; margin: 0; padding-left: 18px; font-size: 14px }
+
+/* UI pass: steadier card heights, tidier hero, keyboard focus, back to top. */
+.card { align-content: stretch; grid-template-rows: auto auto auto 1fr auto }
+.card .actions { align-self: end }
+.pulse { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1fr); align-items: start }
+.targets { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px }
+.target { min-width: 0 }
+.pulse > div { transition: border-color .15s, transform .15s } .pulse > div:hover { border-color: color-mix(in srgb, var(--violet) 55%, var(--line)) }
+:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 6px }
+header { border-bottom: 1px solid var(--line); margin-bottom: -4px }
+.page-head h1 { background: linear-gradient(90deg, var(--ink), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent }
+.table-wrap { border: 1px solid var(--line); border-radius: 12px } .table-wrap table { margin: 0 }
+tbody tr:hover { background: rgba(184, 156, 255, .06) }
+#totop { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 25; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink); font-size: 18px; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, .35) }
+@media (max-width: 960px) { .pulse { grid-template-columns: minmax(0, 1fr) } }
+
+/* Polish: calmer sold-out cards, in-stock glow, smoother interaction */
+html { scroll-behavior: smooth }
+::selection { background: color-mix(in srgb, var(--violet) 40%, transparent) }
+.card:has(.pill.s-out_of_stock) .price { color: var(--muted); font-size: 22px }
+.card:has(.pill.s-out_of_stock) img { opacity: .8 }
+.pill.s-in_stock::before, .pill.s-limited::before { box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 22%, transparent) }
+.card:has(.pill.s-in_stock) { border-color: color-mix(in srgb, var(--good) 28%, var(--line)) }
+@media (prefers-reduced-motion: no-preference) {
+  .card { transition: border-color .15s, transform .15s, box-shadow .15s }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .6) }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+  #results .card { animation: rise .25s ease both }
+  #results .card:nth-child(n+9) { animation-delay: .06s } #results .card:nth-child(n+17) { animation-delay: .12s }
+}
+button, .btn { transition: filter .12s, background-color .12s }
+button:active { transform: translateY(1px) }
+header { backdrop-filter: saturate(1.2) blur(8px); background: color-mix(in srgb, var(--bg) 88%, transparent) }
+/* Deals, guides, tools and community pages */
+#mainnav { flex-wrap: wrap; row-gap: 4px }
+.tier { font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 600; letter-spacing: .3px; white-space: nowrap }
+.tier.free { background: color-mix(in srgb, var(--good) 18%, transparent); color: var(--good) }
+.tier.premium { background: color-mix(in srgb, #e5b300 22%, transparent); color: #e5b300 }
+.deal-card { border-left: 4px solid var(--g, var(--violet)) }
+.deal-top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
+.deal-foot { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap }
+.grade-hot { background: color-mix(in srgb, #ff7a45 20%, transparent); color: #ff7a45 } .grade-good { color: var(--good) } .grade-fair { color: var(--muted) }
+.calc-grid, .cats, .compare, .feat { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px }
+.calc { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 10px; align-content: start }
+.calc h2, .cat h2 { margin: 0; font: 700 18px var(--display) }
+.calc label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px }
+.calc input { padding: 9px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--bg); font-size: 15px; text-transform: none; letter-spacing: 0 }
+.calc .out { background: var(--panel-2); border-radius: 10px; padding: 10px 12px; font-variant-numeric: tabular-nums; min-height: 44px }
+.calc .out.bad { color: var(--bad) }
+.safe { border: 1px solid var(--bad); border-radius: 12px; padding: 12px 14px; background: color-mix(in srgb, var(--bad) 8%, transparent) }
+.cat { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--g, var(--violet)); border-radius: 14px; padding: 16px; display: grid; gap: 10px; align-content: start }
+.cat ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px }
+.rolechips { display: flex; flex-wrap: wrap; gap: 6px } .rolechips span { padding: 4px 9px; border-radius: 99px; background: var(--panel-2); font-size: 13px }
+.mini { margin: 10px 0 4px; font: 700 12px var(--display); text-transform: uppercase; letter-spacing: .8px; color: var(--muted) }
+.cta { display: flex; gap: 10px; flex-wrap: wrap }
+.faq { display: grid; gap: 8px } .faq details { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px } .faq summary { cursor: pointer; font-weight: 600 } .faq p { margin: 8px 0 0; color: var(--muted) }
+.feat .card code { font: 500 12px var(--mono); color: var(--violet) }
 </style>
 
 <div class="wrap">
@@ -239,14 +306,16 @@ main { display: grid; gap: 16px; align-content: start }
       <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="13" cy="13" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 0v5M13 21v5M0 13h5M21 13h5" stroke="currentColor" stroke-width="2"/></svg>
       ETB SNIPER
     </a>
-    <nav aria-label="Views">
-      <a href="#browse">Browse</a><a href="#deals">MSRP deals</a><a href="#flip">Flip guide</a><a href="#drops">Drops</a><a href="#instore">In store</a><a href="#stores">Stores</a><a href="#saved">Saved</a><a href="#about">How it works</a>
+    <nav aria-label="Sections" id="mainnav">
+      <a href="#browse" data-group="find">Find stock</a><a href="#flip" data-group="profit">Make money</a><a href="#techdeals" data-group="hotdeals">Deals</a><a href="#betting" data-group="tools">Tools</a><a href="#community" data-group="community">Community</a><a href="#saved" data-group="saved">Saved</a><a href="#about" data-group="about">Guide</a>
     </nav>
     <div class="head-right">
       <span class="fresh" id="fresh" role="status"><span class="dot"></span>Loading…</span>
       <a class="btn primary" id="discord" href="#about" target="_blank" rel="noopener" hidden>Open Discord</a>
     </div>
   </header>
+
+  <nav class="sub" id="subnav" aria-label="Pages in this section" hidden></nav>
 
   <div class="banner" id="banner" role="status" hidden></div>
 
@@ -264,6 +333,7 @@ main { display: grid; gap: 16px; align-content: start }
   <footer>Fan-run collector tool, not affiliated with The Pokémon Company or any store. Always confirm price, seller and limits at checkout.</footer>
 </div>
 
+<button id="totop" type="button" aria-label="Back to top" hidden>↑</button>
 <div class="sheet" id="sheet" hidden><div class="sheet-panel" id="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title"></div></div>
 
 <script>
@@ -275,7 +345,8 @@ const ago = t => { if (!t) return 'not checked yet'; const m = Math.max(0, Math.
 const store = (k, v) => { try { v === undefined ? null : localStorage.setItem(k, JSON.stringify(v)); return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
 const STOCKED = ['in_stock', 'limited', 'preorder'];
 const RANK = {in_stock: 0, limited: 1, preorder: 2, out_of_stock: 4, unknown: 5, invitation_only: 3};
-const VIEWS = {browse: 'Browse', deals: 'MSRP deals', flip: 'Flip guide', drops: 'Drops', instore: 'In store', stores: 'Stores', saved: 'Saved', about: 'How it works'};
+const GROUPS = {find: ['browse', 'deals', 'stores', 'instore'], profit: ['flip', 'drops', 'activity', 'guides'], hotdeals: ['techdeals', 'alldeals'], tools: ['betting'], community: ['community', 'premium', 'features', 'faq'], saved: ['saved'], about: ['about']};
+const VIEWS = {browse: 'Browse', deals: 'MSRP deals', flip: 'Flip guide', drops: 'Drops', activity: 'Activity', instore: 'In store', stores: 'Stores', saved: 'Saved', about: 'How it works', guides: 'Flip guides', techdeals: 'Electronics', alldeals: 'All deals', betting: 'Betting tools', community: 'The server', premium: 'Free vs Premium', features: 'Features', faq: 'FAQ'};
 const GAME = {pokemon: '⚡', one_piece: '🏴‍☠️', electronics: '🎮'};
 // Release pages usually go live overnight, so count down to midnight local time on the release date.
 const dropTime = d => new Date(d.date + 'T00:00:00').getTime();
@@ -438,7 +509,12 @@ const head = (title, lede) => `<div class="page-head"><h1>${title}</h1><p class=
 
 function render() {
   const h = location.hash.slice(1), view = VIEWS[h] ? h : 'browse';
-  document.querySelectorAll('nav a').forEach(a => a.getAttribute('href') === '#' + view ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  const group = Object.keys(GROUPS).find(k => GROUPS[k].includes(view));
+  document.querySelectorAll('#mainnav a').forEach(a => a.dataset.group === group ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  const sub = $('#subnav');
+  sub.hidden = GROUPS[group].length < 2;
+  sub.innerHTML = GROUPS[group].map(v => `<a href="#${v}"${v === view ? ' aria-current="page"' : ''}>${VIEWS[v]}</a>`).join('');
+  $('#summary').hidden = group !== 'find';
   document.title = (view === 'browse' ? '' : VIEWS[view] + ' · ') + 'ETB Sniper Radar';
   $('#pulse').hidden = view !== 'browse' || !$('#pulse').innerHTML;
   const el = $('#view');
@@ -486,6 +562,8 @@ function render() {
         <li><span class="call c-pass">${CALLS.pass}</span>You would lose money at this price.</li>
         <li><span class="call c-watch">${CALLS.watch}</span>Sold out or no live price. Only worth buying at or under the “buy at” price in its Details.</li>
         <li><span class="call c-unknown">${CALLS.unknown}</span>No resale price yet. Check eBay sold listings first.</li></ul></details></section></section>`
+      + `<section class="about"><h2 class="sec-title">💵 Budget planner</h2><p class="sec-note">Type what you can spend. This lists one of each worthwhile MSRP product in the order that earns the most per dollar, same as <code>/flips</code> in Discord.</p>
+        <label class="cash">Cash on hand $<input id="cash" type="number" min="1" max="10000" step="10" value="${esc(store('cash') || 200)}" inputmode="decimal"></label><div id="cash-out"></div></section>`
       + `<div class="jump" role="group" aria-label="Jump to a section">${jumps.map(([id, l, n]) => `<button class="chip" data-jump="sec-${id}">${esc(l)} <i>${n}</i></button>`).join('')}</div>`
       + sec('now', `💰 Flips in stock now <small>$${g.profit_line}+ after fees, or $8+ at 50%+ ROI on cheap items</small>`, '',
           winners.length ? listingTable(winners, 'Profit', p => p.resale.profit_at_price)
@@ -497,6 +575,7 @@ function render() {
       + sec('all', 'Every in-stock listing we can price', live.length > flipShown ? `Showing ${flipShown} of ${live.length}, best flip first.` : '',
           live.length ? listingTable(live.slice(0, flipShown), 'Flip here', p => p.resale.profit_at_price) + (live.length > flipShown ? `<button class="btn more" data-flipmore>Show ${Math.min(25, live.length - flipShown)} more</button>` : '')
             : '<div class="empty">Nothing we can price is in stock right now.</div>');
+    renderCash();
   } else if (view === 'drops') {
     const cal = data.calendar || {drops: [], tips: []};
     const item = (it, d) => `<tr><td>${esc(it.name)}${it.rough ? '<span class="rough">rough</span>' : ''}</td><td class="num">${usd(it.msrp)}</td><td class="num">${it.market != null ? usd(it.market) : ', '}</td>
@@ -537,6 +616,16 @@ function render() {
     const list = data.products.filter(p => saved.has(p.id));
     el.innerHTML = head('Saved', 'Products you starred on this device. To get a DM when one restocks, save it in Discord too and turn on DMs with <code>/alerts</code>, or use <code>/notify</code>.')
       + grid(list, 'Tap ⭐ on any product to keep it here.');
+  } else if (view === 'activity') {
+    const names = Object.fromEntries(data.retailers.map(r => [r.id, r.name])), act = data.activity || [];
+    const KIND = {available: ['🟢', 'In stock'], restock: ['🔁', 'Restocked'], price: ['💲', 'Price change'], preorder: ['📅', 'Preorder']};
+    const day = t => new Date(t * 1000).toLocaleDateString([], {weekday: 'long', month: 'short', day: 'numeric'});
+    let last = '';
+    el.innerHTML = head('Activity', 'The latest stock and price changes the monitor saw over the past week, newest first. Same events that post in #live-updates on Discord. Stock can sell out within minutes, so treat this as a log, not a live shelf.')
+      + ((data.patterns || []).length ? `<section class="about"><h2 class="sec-title">⏱️ When stores restock</h2><p class="sec-note">Learned from this bot's own alerts over the last 30 days, in Eastern time. Only stores the bot can read are listed.</p><div class="table-wrap"><table><thead><tr><th>Store</th><th class="num">Restocks</th><th>Busiest day</th><th>Busiest hours</th></tr></thead><tbody>${data.patterns.map(x => `<tr><td>${esc(x.store)}</td><td class="num">${x.count}</td><td>${esc(x.day)} <span class="meta">${x.day_share}%</span></td><td>${esc(x.band)} <span class="meta">${x.band_share}%</span></td></tr>`).join('')}</tbody></table></div></section>` : '')
+      + (act.length ? act.map(a => { const d = day(a.at), k = KIND[a.kind] || ['•', a.kind], h = d !== last ? `<div class="group-head"><h2>${d}</h2></div>` : ''; last = d;
+          return h + `<div class="feed"><span>${k[0]}</span><div><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.name)}</a><span class="meta"> ${k[1]}${a.detail ? ' · ' + esc(a.detail) : ''} · ${esc(names[a.retailer_id] || a.retailer_id)} · ${ago(a.at)}</span></div></div>`; }).join('')
+        : '<div class="empty">No changes recorded this week.</div>');
   } else if (view === 'stores') {
     const latest = {};
     for (const s of data.sources || []) if (s.checked_at && s.checked_at > (latest[s.retailer_id] || 0)) latest[s.retailer_id] = s.checked_at;
@@ -568,11 +657,171 @@ function render() {
       </div>`
       + (src.length ? `<h2 class="sec-title">Where the stock data comes from</h2><p class="sec-note">Each row is a public store page or catalog the monitor reads.${blocked.length ? ` ${blocked.map(esc).join(', ')} block automatic checks, so they are not listed; check them yourself.` : ''}</p>
         <div class="table-wrap"><table><thead><tr><th>Source</th><th class="num">In stock</th><th class="num">Listings</th><th class="num">Last checked</th></tr></thead><tbody>${[...src].sort((a, b) => (b.in_stock || 0) - (a.in_stock || 0)).map(s => `<tr><td><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(sourceName(s.name))}</a>${s.state === 'current' ? '' : ' <span class="tag over">not verified yet</span>'}</td><td class="num">${s.in_stock ?? ', '}</td><td class="num">${s.products ?? ', '}</td><td class="num">${s.checked_at ? ago(s.checked_at) : ', '}</td></tr>`).join('')}</tbody></table></div>` : '');
+  } else if (EXTRA[view]) {
+    EXTRA[view](el);
   } else {
     el.innerHTML = filtersHTML() + `<div id="results">${grid(filtered(data.products), emptyText(), true)}</div>`;
     updateChips();
   }
 }
+
+/* BET:start */
+const BET = (() => {
+  const dec = v => {
+    const t = String(v).trim().toLowerCase().replace(/\s/g, '');
+    if (!t) throw new Error('Enter odds like -110, +150 or 1.91.');
+    if (t.endsWith('%')) { const p = parseFloat(t) / 100; if (!(p > 0 && p < 1)) throw new Error('Use a percent between 0 and 100.'); return 1 / p; }
+    const n = Number(t);
+    if (!Number.isFinite(n)) throw new Error('Enter odds like -110, +150 or 1.91.');
+    if (t[0] === '+' || t[0] === '-' || Math.abs(n) >= 100) {
+      if (Math.abs(n) < 100) throw new Error('American odds are at least 100 away from zero.');
+      return n > 0 ? 1 + n / 100 : 1 + 100 / -n;
+    }
+    if (n <= 1) throw new Error('Decimal odds must be above 1.00.');
+    return n;
+  };
+  const american = d => { const v = d >= 2 ? Math.round((d - 1) * 100) : Math.round(-100 / (d - 1)); return v > 0 ? '+' + v : String(v); };
+  const money = v => (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const pct = (v, p = 1) => (v * 100).toFixed(p) + '%';
+  return {
+    dec, american, money, pct,
+    convert: v => { const d = dec(v); return {decimal: d, american: american(d), prob: 1 / d}; },
+    parlay: (legs, stake) => { if (legs.length < 2 || legs.length > 15) throw new Error('A parlay needs 2 to 15 legs.'); const d = legs.map(dec).reduce((a, b) => a * b, 1); return {decimal: d, prob: 1 / d, profit: stake * (d - 1)}; },
+    novig: (a, b) => { const da = dec(a), db = dec(b), pa = 1 / da, pb = 1 / db, t = pa + pb; return {hold: t - 1, fairA: pa / t, fairB: pb / t, arb: t < 1, fairDecA: t / pa, fairDecB: t / pb}; },
+    hedge: (stake, o, h) => { const d1 = dec(o), d2 = dec(h), hs = stake * d1 / d2; return {hedge: hs, locked: stake * d1 - stake - hs}; },
+    freebet: (amt, fo, ho) => { const d1 = dec(fo), d2 = dec(ho), hs = amt * (d1 - 1) / d2, locked = hs * d2 - hs; return {hedge: hs, locked, rate: locked / amt}; },
+    kelly: (bank, o, p, frac) => { const d = dec(o); if (!(p > 0 && p < 1)) throw new Error('Win chance must be between 1% and 99%.'); const b = d - 1, full = (b * p - (1 - p)) / b; return {edge: p * d - 1, full, stake: Math.max(0, full * frac) * bank, fair: 1 / d}; },
+  };
+})();
+/* BET:end */
+
+const safeUrl = u => typeof u === 'string' && u.startsWith('https://') ? u : '#';
+const GRADE = {3: ['🔥 Hot', 'hot'], 2: ['👍 Good', 'good'], 1: ['🙂 Fair', 'fair']};
+const FLAG = {best: 'Best-price wording', refurb: 'Renewed or refurbished', coupon: 'Needs a coupon or code', prime: 'Prime pricing', seller: 'Check the seller'};
+const tierTag = t => t === 'premium' ? '<span class="tier premium">💎 Premium</span>' : t === 'free' ? '<span class="tier free">Free</span>' : '';
+const dealF = {store: 'all', cat: 'all', min: 0, q: '', group: 'all'};
+
+function dealCard(d) {
+  const ch = (data.deal_channels || {})[d.channel] || {}, g = GRADE[d.grade];
+  const note = {search: 'Opens the store\'s search for this item', flights: 'Opens a flight search', details: 'Opens the article'}[d.kind] || '';
+  const label = {item: 'Open at ' + (d.store || 'the store'), search: 'Find at ' + (d.store || 'the store'), flights: 'Search flights', details: 'Read the details'}[d.kind] || 'Open the deal';
+  return `<article class="card deal-card" style="--g:${esc(ch.color || '#b89cff')}">
+    <div class="deal-top"><span class="store">${esc(ch.emoji || '')} ${esc(ch.label || '')}</span>${g ? `<span class="tag grade-${g[1]}">${g[0]}</span>` : ''}${d.percent ? `<span class="tag deal">${d.percent}% off</span>` : ''}</div>
+    <a class="name" href="${esc(safeUrl(d.link))}" target="_blank" rel="noopener">${esc(d.name)}</a>
+    <div class="price-row">${d.price != null ? `<span class="price">${usd(d.price)}</span>` : ''}${d.was ? `<s class="meta">${usd(d.was)}</s>` : ''}${d.store ? `<span class="meta">${esc(d.store)}</span>` : ''}</div>
+    ${d.code ? `<div class="meta">Code <code>${esc(d.code)}</code></div>` : ''}
+    ${d.low != null ? `<div class="meta">Lowest we have seen: <b>${usd(d.low)}</b> (${d.seen} sighting${d.seen === 1 ? '' : 's'})</div>` : ''}
+    ${(d.flags || []).length ? `<div class="meta">${d.flags.map(f => esc(FLAG[f] || f)).join(' · ')}</div>` : ''}
+    <div class="deal-foot"><a class="btn" href="${esc(safeUrl(d.link))}" target="_blank" rel="noopener">${esc(label)}</a><span class="meta">${ago(d.at)}</span></div>
+    ${note ? `<span class="meta">${note}</span>` : ''}</article>`;
+}
+
+function dealsList(rows) {
+  const q = dealF.q.trim().toLowerCase();
+  const out = rows.filter(d => (dealF.store === 'all' || (dealF.store === 'amazon' ? d.channel === 'amazon_tech' : d.channel === 'walmart_tech'))
+    && (dealF.cat === 'all' || d.category === dealF.cat) && (d.percent || 0) >= dealF.min && (dealF.group === 'all' || (data.deal_channels[d.channel] || {}).group === dealF.group)
+    && (!q || d.name.toLowerCase().includes(q)));
+  return out.length ? `<p class="count">${out.length} deal${out.length === 1 ? '' : 's'} in the last 24 hours</p><div class="grid">${out.map(dealCard).join('')}</div>`
+    : '<div class="empty">No deals match. Try clearing a filter. New ones appear here as the feeds show them.</div>';
+}
+
+function wireDeals(el, rows) {
+  const list = $('#deallist', el);
+  el.querySelectorAll('[data-df]').forEach(c => c.addEventListener('input', () => {
+    const k = c.dataset.df; dealF[k] = k === 'min' ? Number(c.value) : c.value; list.innerHTML = dealsList(rows);
+    el.querySelectorAll('[data-dg]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.dg === dealF.group)));
+  }));
+  el.querySelectorAll('[data-dg]').forEach(b => b.addEventListener('click', () => {
+    dealF.group = b.dataset.dg; list.innerHTML = dealsList(rows);
+    el.querySelectorAll('[data-dg]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.dg === dealF.group)));
+  }));
+}
+
+const EXTRA = {
+  techdeals(el) {
+    const rows = (data.deals || []).filter(d => ['amazon_tech', 'walmart_tech'].includes(d.channel));
+    const cats = Object.entries(data.categories || {});
+    el.innerHTML = head('Electronics deals', 'Amazon and Walmart TVs, laptops, audio, gaming and more. Every deal is graded on the discount, the dollars saved and the lowest price we have tracked for that item. Same deals as #amazon-electronics and #walmart-electronics in Discord.')
+      + `<div class="filters"><input class="search" data-df="q" placeholder="Search deals, like “oled” or “airpods”" value="${esc(dealF.q)}" aria-label="Search deals">
+        <div class="selects"><label>Store<select data-df="store"><option value="all">Amazon and Walmart</option><option value="amazon"${dealF.store === 'amazon' ? ' selected' : ''}>Amazon</option><option value="walmart"${dealF.store === 'walmart' ? ' selected' : ''}>Walmart</option></select></label>
+        <label>Category<select data-df="cat"><option value="all">All</option>${cats.map(([k, v]) => `<option value="${esc(k)}"${dealF.cat === k ? ' selected' : ''}>${esc(v.emoji)} ${esc(v.label)}</option>`).join('')}</select></label>
+        <label>Discount<select data-df="min">${[0, 15, 25, 40].map(n => `<option value="${n}"${dealF.min === n ? ' selected' : ''}>${n ? n + '% or more' : 'Any'}</option>`).join('')}</select></label></div></div>`
+      + `<div id="deallist">${dealsList(rows)}</div>`
+      + `<section class="about"><section><h2>How deals are graded</h2><ul><li>🔥 <b>Hot</b>: 40% off and $25 saved, a best-price deal, or a new low in our tracking.</li><li>👍 <b>Good</b>: 25% off, $75 saved, or best-price wording.</li><li>🙂 <b>Fair</b>: 15% off or $20 saved.</li><li>Cheap accessories and refurbished items must clear a higher bar.</li></ul></section>
+      <section><h2>Get them in Discord</h2><ul><li><code>/techdeals</code> lists the best right now by store, category and price.</li><li><code>/dealwatch</code> sends a DM when a deal matches words you choose.</li><li><code>/pricecheck</code> shows the price history for an Amazon link.</li></ul></section></section>`;
+    wireDeals(el, rows);
+  },
+  alldeals(el) {
+    const rows = (data.deals || []);
+    const groups = [['all', 'All'], ['store', 'Store deals'], ['shoes', 'Shoes'], ['collect', 'Collectibles'], ['money', 'Money'], ['travel', 'Travel']];
+    el.innerHTML = head('All deals', 'Graded electronics plus store, shoe, collectible, money and travel deals from public deal sites, each linked to the store item or that store\'s search for it. Always confirm price and stock at checkout.')
+      + `<div class="filters"><input class="search" data-df="q" placeholder="Search all deals" value="${esc(dealF.q)}" aria-label="Search deals"><div class="chips">${groups.map(([k, l]) => `<button class="chip" data-dg="${k}" aria-pressed="${dealF.group === k}">${l}</button>`).join('')}</div></div>`
+      + `<div id="deallist">${dealsList(rows)}</div>`;
+    wireDeals(el, rows);
+  },
+  guides(el) {
+    const g = data.guides, f = g.fees, rows = g.rows.filter(r => r.profit >= g.profit_line);
+    el.innerHTML = head('Flip guides', 'The same guides as #flip-guides in Discord. Catch a restock at MSRP, buy within the store limit, resell sealed at market price.')
+      + `<div class="about"><section><h2>What comes off the sale price</h2><ul><li><b>Marketplace fee</b>: ${(f.card_rate * 100).toFixed(2).replace(/0$/, '')}% for cards, ${(f.electronics_rate * 100).toFixed(1)}% for electronics, plus ${usd(f.fixed)} per order</li><li><b>Outbound shipping</b>: about $5 to $15 by box size, more for consoles and graphics cards</li><li><b>Packing</b>: ${usd(f.packing)} per order</li><li><b>Return reserve</b>: ${(f.return_reserve * 100).toFixed(0)}% of the sale price</li><li><b>Sales tax at the shelf</b>: ${(f.sales_tax * 100).toFixed(0)}%</li></ul>
+        <p class="meta" style="margin-top:10px">A flip is worth the time at ${usd(g.profit_line)} or more after all of that, and still is if the resale price slips 10%.</p></section>
+      <section><h2>In 4 steps</h2><ul><li><b>1. Watch</b>: turn on Flip Pings and watch #restocks.</li><li><b>2. Check</b>: the alert says ✅ BUY, ⚠️ RISKY or 🔻 PASS, and the most to pay.</li><li><b>3. Buy</b>: check out yourself, one or two per guest, sealed.</li><li><b>4. Sell</b>: <code>/ledger sellkit</code> writes the listing. Sell within a few weeks.</li></ul></section></div>`
+      + `<h2 class="sec-title">🎯 What to hunt right now</h2><p class="sec-note">Ranked by what one unit makes when bought at MSRP. 🏬 marks products a big store we watch carries. Researched ${esc(g.researched)}.</p>`
+      + `<div class="table-wrap"><table><thead><tr><th>Item</th><th class="num">MSRP</th><th class="num">Resells</th><th class="num">You keep</th><th class="num">Profit at MSRP</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r.big_store ? '🏬 ' : ''}${esc(r.product)}${r.rough ? ' <span class="rough">rough</span>' : ''}</td><td class="num">${usd(r.msrp)}</td><td class="num">${usd(r.market)}</td><td class="num">${usd(r.net)}</td><td class="num up"><b>${money(r.profit)}</b></td></tr>`).join('')}</tbody></table></div>`
+      + `<h2 class="sec-title">📦 Where to sell</h2><div class="table-wrap"><table><thead><tr><th>Platform</th><th>Fee</th><th>Notes</th></tr></thead><tbody>${g.platforms.map(p => `<tr><td>${esc(p.name)}</td><td>${esc(p.fee)}</td><td class="meta">${p.ships ? 'Ships' : 'Local pickup'}${p.note ? ' · ' + esc(p.note) : ''}</td></tr>`).join('')}</tbody></table></div>`
+      + `<div class="about"><section><h2>🛒 Finding stock in stores</h2><ul>${g.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul></section><section><h2>⚠️ Avoid the traps</h2><ul>${g.traps.map(t => `<li><b>${esc(t.title)}</b>: ${esc(t.text)}</li>`).join('')}</ul></section></div>`;
+  },
+  betting(el) {
+    const field = (id, label, ph, val = '') => `<label>${label}<input id="${id}" inputmode="decimal" placeholder="${ph}" value="${val}" autocomplete="off"></label>`;
+    el.innerHTML = head('Sports betting tools', 'Calculators only. We do not sell picks and nobody can promise a win. Same tools as /bet in Discord. 21+ and only where it is legal.')
+      + `<div class="safe"><b>Stay in control.</b> Betting is entertainment, never income. Only stake money you can afford to lose and set a limit first. Need help? Call or text <b>1-800-GAMBLER</b> or visit ncpgambling.org.</div>`
+      + `<div class="calc-grid">
+        <div class="calc" data-calc="odds"><h2>Odds converter</h2>${field('o1', 'Odds', '-110, +150, 1.91 or 52%', '-110')}<div class="out" id="o1-out"></div></div>
+        <div class="calc" data-calc="parlay"><h2>Parlay</h2>${field('p1', 'Odds for each leg, separated by commas', '-110, +150, -200', '-110, +150')}${field('p2', 'Stake ($)', '10', '10')}<div class="out" id="p-out"></div></div>
+        <div class="calc" data-calc="novig"><h2>Remove the vig</h2>${field('n1', 'One side', '-110', '-110')}${field('n2', 'Other side', '-110', '-110')}<div class="out" id="n-out"></div></div>
+        <div class="calc" data-calc="hedge"><h2>Hedge</h2>${field('h1', 'Your stake ($)', '100', '100')}${field('h2', 'Odds you took', '+300', '+300')}${field('h3', 'Odds now on the other side', '-150', '-150')}<div class="out" id="h-out"></div></div>
+        <div class="calc" data-calc="free"><h2>Free bet converter</h2>${field('f1', 'Free bet ($)', '50', '50')}${field('f2', 'Odds for the free bet (longer is better)', '+400', '+400')}${field('f3', 'Odds on the other side', '-450', '-450')}<div class="out" id="f-out"></div></div>
+        <div class="calc" data-calc="kelly"><h2>Stake size (Kelly)</h2>${field('k1', 'Bankroll ($)', '1000', '1000')}${field('k2', 'Odds offered', '+100', '+100')}${field('k3', 'Your honest win chance (%)', '55', '55')}${field('k4', 'Kelly fraction', '0.25', '0.25')}<div class="out" id="k-out"></div></div></div>`
+      + `<section class="about"><section><h2>Rules that matter</h2><ul><li><b>Bankroll first</b>: bet 1 to 2 percent of it per play.</li><li><b>Shop lines</b>: the same bet pays differently at each book.</li><li><b>Mind the vig</b>: a -110 / -110 market costs about 4.5% every time.</li><li><b>Parlays hold the most margin</b>: fun money only.</li><li><b>Never chase losses</b>: stop at your limit.</li><li><b>Track every bet</b>: you will learn what works.</li></ul></section></section>`;
+    const v = id => $('#' + id, el).value, num = id => { const n = parseFloat(v(id)); if (!Number.isFinite(n)) throw new Error('Enter a number.'); return n; };
+    const run = (out, fn) => { const box = $('#' + out, el); try { box.innerHTML = fn(); box.classList.remove('bad'); } catch (e) { box.textContent = e.message; box.classList.add('bad'); } };
+    const draw = () => {
+      run('o1-out', () => { const c = BET.convert(v('o1')); return `American <b>${c.american}</b> · Decimal <b>${c.decimal.toFixed(3)}</b> · Implied chance <b>${BET.pct(c.prob)}</b><br><span class="meta">A $100 bet wins ${BET.money(100 * (c.decimal - 1))}.</span>`; });
+      run('p-out', () => { const legs = v('p1').split(/[,;]/).filter(x => x.trim()), r = BET.parlay(legs, num('p2')); return `${legs.length} legs pay <b>${BET.american(r.decimal)}</b> · wins <b>${BET.money(r.profit)}</b><br><span class="meta">All legs must hit, about ${BET.pct(r.prob)} of the time just to break even.</span>`; });
+      run('n-out', () => { const r = BET.novig(v('n1'), v('n2')); return `Fair chances <b>${BET.pct(r.fairA)}</b> and <b>${BET.pct(r.fairB)}</b> · fair odds ${BET.american(r.fairDecA)} / ${BET.american(r.fairDecB)}<br><span class="meta">${r.arb ? 'These prices add up to under 100%. Check they are the same market and line.' : 'Sportsbook margin ' + BET.pct(r.hold)}</span>`; });
+      run('h-out', () => { const r = BET.hedge(num('h1'), v('h2'), v('h3')); return `Bet <b>${BET.money(r.hedge)}</b> on the other side to lock <b>${BET.money(r.locked)}</b> either way.`; });
+      run('f-out', () => { const r = BET.freebet(num('f1'), v('f2'), v('f3')); return `Cover with <b>${BET.money(r.hedge)}</b> to lock <b>${BET.money(r.locked)}</b> (${BET.pct(r.rate, 0)} of the free bet).<br><span class="meta">Read the promo terms for minimum odds and the expiry date.</span>`; });
+      run('k-out', () => { const r = BET.kelly(num('k1'), v('k2'), num('k3') / 100, num('k4')); return r.edge <= 0 ? `No edge: the book needs you to win ${BET.pct(r.fair)}. <b>Stake $0.</b>` : `Suggested stake <b>${BET.money(r.stake)}</b> · edge ${BET.pct(r.edge)}<br><span class="meta">Only as good as your win chance estimate. Most people overestimate theirs.</span>`; });
+    };
+    el.querySelectorAll('.calc input').forEach(i => i.addEventListener('input', draw));
+    draw();
+  },
+  community(el) {
+    const c = data.community, invite = c.invite_url;
+    el.innerHTML = head('The Discord server', 'Free restock alerts with the profit math, graded deals, guides, giveaways and a community. This map is built from the live server.')
+      + `<div class="cta">${invite ? `<a class="btn primary" href="${esc(safeUrl(invite))}" target="_blank" rel="noopener">Join the server</a>` : ''}<a class="btn" href="#premium">Free vs Premium</a><a class="btn" href="#features">All features</a></div>`
+      + `<div class="cats">${c.categories.map(k => `<section class="cat" style="--g:${k.tier === 'premium' ? esc(data.palette.premium) : k.tier === 'free' ? esc(data.palette.store) : esc(data.palette.brand)}"><h2>${esc(k.name)} ${tierTag(k.tier === 'open' ? '' : k.tier)}</h2><ul>${k.channels.map(ch => `<li><b>${esc(ch.name)}</b><br><span class="meta">${esc(ch.topic)}</span></li>`).join('')}</ul></section>`).join('')}</div>`
+      + `<div class="about"><section><h2>🎭 Roles</h2><p class="meta">Pick yours in #pick-your-roles.</p><h3 class="mini">Card games</h3><div class="rolechips">${c.tcg.map(t => `<span>${esc(t.emoji)} ${esc(t.name)}</span>`).join('')}</div><h3 class="mini">Your state</h3><p class="meta">All ${c.states - 1} states plus DC. Sightings in your state mention your role.</p></section>
+      <section><h2>🏆 Points and ranks</h2><ul>${c.ranks.map(r => `<li>${esc(r.name)} <span class="meta">${r.points.toLocaleString()}+ points</span></li>`).join('')}</ul><h3 class="mini">Earn points</h3><ul><li><code>/checkin</code> ${c.checkin.base} a day, +${c.checkin.streak_bonus} per day in a row (up to ${c.checkin.streak_cap} days)</li>${c.earn.map(e => `<li>${esc({chat: 'Chatting', sighting: 'In-store sighting', buy: 'Log a buy', sale: 'Log a sale', worth: 'Price check'}[e.kind] || e.kind)}: ${e.points} each, ${e.daily_cap} a day</li>`).join('')}</ul></section>
+      <section><h2>🛟 Help desk</h2><p class="meta">Open a ticket and a private channel is created for you and the support team.</p><ul>${c.tickets.map(t => `<li>${esc(t.emoji)} <b>${esc(t.name)}</b><br><span class="meta">${esc(t.text)}</span></li>`).join('')}</ul></section></div>`;
+  },
+  premium(el) {
+    const c = data.community, url = c.premium_url;
+    el.innerHTML = head('Free and Premium', 'Everything free stays free. Premium adds focused instant feeds and extra tools for people who flip seriously.')
+      + `<div class="compare"><section class="cat" style="--g:${esc(data.palette.store)}"><h2>🆓 Free</h2><ul>${c.free_perks.map(p => `<li>${esc(p)}</li>`).join('')}</ul></section>
+        <section class="cat" style="--g:${esc(data.palette.premium)}"><h2>💎 Premium</h2><ul>${c.premium_perks.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+        ${url ? `<a class="btn primary" href="${esc(safeUrl(url))}" target="_blank" rel="noopener">Upgrade now</a>` : '<p class="meta">Premium is being set up. Open a ticket in #help-desk on Discord to be told when it opens.</p>'}</section></div>`
+      + `<p class="meta">Premium never changes what the free alerts show. It is a calmer, faster view of the best ones. No profit is promised, and prices can move before you buy.</p>`;
+  },
+  features(el) {
+    const c = data.community;
+    el.innerHTML = head('Features', 'Everything the server and bot can do. Free unless marked Premium.')
+      + c.features.map(a => `<h2 class="sec-title">${esc(a.emoji)} ${esc(a.area)}</h2><div class="feat">${a.items.map(i => `<div class="card"><div class="deal-top"><b>${esc(i.name)}</b>${tierTag(i.tier)}</div><span class="meta">${esc(i.text)}</span><code>${esc(i.where)}</code></div>`).join('')}</div>`).join('');
+  },
+  faq(el) {
+    el.innerHTML = head('Frequently asked questions', 'Short answers to what people ask most. Still stuck? Open a ticket in #help-desk on Discord.')
+      + `<div class="faq">${data.community.faq.map(x => `<details><summary>${esc(x.q)}</summary><p>${esc(x.a)}</p></details>`).join('')}</div>`;
+  },
+};
 
 // 🏆 Hits and 🎯 buy-at-or-under prices: the same numbers as the #deals board in Discord.
 const sourceName = n => n.replace(/ · (\S+)$/, (m, slug) => slug.includes('-') ? ' · ' + slug.replace(/-/g, ' ') : m);
@@ -586,7 +835,7 @@ function pulse(d) {
   el.innerHTML = `<div class="hero-buy"><h2>💰 Buy now</h2>${buy.length
       ? buy.map(p => `<a class="buy-row" href="${esc(p.url)}" target="_blank" rel="noopener"><span class="nm">${esc(p.name)}</span><span class="chip-profit">${money(p.resale.breakdown.now.profit)}</span><span class="sub">${esc(names[p.retailer_id])} · ${usd(p.price)} · ${p.resale.breakdown.now.roi}% ROI</span></a>`).join('')
       : `<span class="meta">Nothing in stock is worth flipping this minute. The bot pings 💰 Flip Pings in Discord the moment that changes.</span>`}
-      ${t.length ? `<span class="meta hide-sm">🎯 Buy at or under:</span><div class="targets">${t.slice(0, 4).map(x => `<a class="target" href="${esc(x.url || '#flip')}" target="_blank" rel="noopener"><span>${esc(x.name)}</span><b>${usd(x.max_buy)}</b><span>resells ≈${usd(x.market)}</span></a>`).join('')}</div>` : ''}</div>
+      ${t.length ? `<span class="meta" style="margin-top:6px">🎯 Buy at or under:</span><div class="targets">${t.slice(0, 4).map(x => `<a class="target" href="${esc(x.url || '#flip')}" target="_blank" rel="noopener"><span>${esc(x.name)}</span><b>${usd(x.max_buy)}</b><span>resells ≈${usd(x.market)}</span></a>`).join('')}</div>` : ''}</div>
     <div class="hero-drop"><h2>📅 Next drop</h2>${next
       ? `<span class="countdown" data-countdown="${dropTime(next)}">${countdown(dropTime(next))}</span><b>${GAME[next.game] || '📦'} ${esc(next.name)}</b>
          <span class="meta">${new Date(next.date + 'T12:00:00').toLocaleDateString([], {weekday: 'long', month: 'short', day: 'numeric'})}${next.best_profit ? ` · up to ${money(next.best_profit)} at MSRP` : ''}</span>
@@ -668,12 +917,29 @@ document.addEventListener('click', e => {
   else if (t.id === 'more') { shown += 24; location.hash === '#deals' || location.hash === '#saved' ? render() : renderResults(); }
   else if (t.id === 'close') closeSheet();
 });
+// One of each worthwhile MSRP product, best profit per dollar first, until the cash runs out (cost is out the door, tax included).
+function renderCash() {
+  const out = $('#cash-out'), cash = parseFloat($('#cash').value) || 0, g = data.flip;
+  store('cash', cash);
+  const cost = r => r.net - r.profit_at_msrp;
+  const pool = g.rows.filter(r => r.at_big_store && r.profit_at_msrp >= g.profit_line && cost(r) > 0).sort((a, b) => b.profit_at_msrp / cost(b) - a.profit_at_msrp / cost(a));
+  let left = cash;
+  const picks = pool.filter(r => cost(r) <= left && (left -= cost(r), true)), rest = pool.filter(r => !picks.includes(r));
+  const next = rest.sort((a, b) => cost(a) - cost(b))[0];
+  out.innerHTML = picks.length
+    ? `<p class="meta"><b>${usd(cash - left)}</b> spent, about <b class="good">${money(picks.reduce((t, r) => t + r.profit_at_msrp, 0))}</b> back after fees and shipping, ${usd(left)} left.</p><ol class="steps">${picks.slice(0, 12).map(r => `<li><b>${esc(r.product || r.set)}</b>: pay ${usd(cost(r))}, keep ${money(r.profit_at_msrp)}</li>`).join('')}</ol>`
+      + (next ? `<p class="meta">Next one up, ${esc(next.product || next.set)}, needs ${usd(cost(next) - left)} more.</p>` : '')
+    : `<div class="empty">Nothing on the list costs ${usd(cash)} or less out the door.</div>`;
+}
 document.addEventListener('input', e => {
+  if (e.target.id === 'cash') renderCash();
   if (e.target.id === 'q') { f.q = e.target.value; shown = 24; renderResults(); }
 });
 document.addEventListener('change', e => {
   if (['stock', 'store', 'budget', 'sort', 'value'].includes(e.target.id)) { f[e.target.id] = e.target.value; shown = 24; renderResults(); }
 });
+addEventListener('scroll', () => { $('#totop').hidden = scrollY < 900; }, {passive: true});
+$('#totop').addEventListener('click', () => scrollTo({top: 0, behavior: 'smooth'}));
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeSheet();
   else if (e.key === 'Tab' && !$('#sheet').hidden) {
@@ -686,7 +952,7 @@ document.addEventListener('keydown', e => {
 });
 window.addEventListener('hashchange', () => { shown = 24; flipShown = 25; render(); window.scrollTo(0, 0); });
 
-function paintSaved() { const a = $('nav a[href="#saved"]'); if (a) a.textContent = saved.size ? `Saved (${saved.size})` : 'Saved'; }
+function paintSaved() { const a = $('#mainnav a[data-group="saved"]'); if (a) a.textContent = saved.size ? `Saved (${saved.size})` : 'Saved'; }
 function paintFresh() {
   if (!data) return;
   const age = Date.now() / 1000 - data.generated_at, old = age > 7200;
@@ -700,7 +966,7 @@ function load(first) {
   return fetch('data.json', {cache: 'no-store'}).then(r => r.json()).then(d => {
     data = d; loadedAt = Date.now() / 1000; names = Object.fromEntries(d.retailers.map(r => [r.id, r.name]));
     paintFresh(); paintSaved();
-    const dl = $('#discord'); dl.hidden = !d.discord.welcome; if (d.discord.welcome) dl.href = d.discord.welcome;
+    const dl = $('#discord'); const join = (d.community && d.community.invite_url) || d.discord.welcome; dl.hidden = !join; if (join) dl.href = join;
     $('#n-stock').textContent = d.products.filter(p => ['in_stock', 'limited'].includes(p.availability)).length;
     $('#n-deals').textContent = d.products.filter(isDeal).length;
     $('#n-products').textContent = d.products.filter(p => p.value === 'profit').length;
